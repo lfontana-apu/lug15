@@ -3,7 +3,7 @@ package costruttore;
 import java.util.Scanner;
 
 public class Camicia {
-	// campi private perchè incupsulati cioè non accessibili direttamente dall'esertno alla classe
+	// campi private perchè incupsulati cioè non accessibili direttamente dall'esterno alla classe
 	private int ID;
 	private String descrizione = "-descrizione richiesta-";
 	private char codiceColore = 'U'; // R = red, G = green, B = blue, W = white
