@@ -34,7 +34,7 @@ public class ProgrammaTV {
 	}
 
 	public boolean setGiorno(int giorno) {
-		if (giorno >= 1 && mese <= 32) {
+		if (giorno >= 1 && giorno <= 31) {
 			this.giorno = giorno;
 			return true;
 		}
@@ -47,16 +47,16 @@ public class ProgrammaTV {
 			this.ora = ora;
 			return true;
 		}
-		System.out.println("[ERRORE] L'ora deve essere compreasa tra 0 e 23");
+		System.out.println("[ERRORE] L'ora deve essere compresa tra 0 e 23");
 		return false;
 	}
 
 	public boolean setMinuto(int minuto) {
-		if (minuto >= 0 && mese <= 59) {
+		if (minuto >= 0 && minuto <= 59) {
 			this.minuto = minuto;
 			return true;
 		}
-		System.out.println("[ERRORE] I minuti devo essere compresi tra 0 e 59");
+		System.out.println("[ERRORE] I minuti devono essere compresi tra 0 e 59");
 		return false;
 	}
 
@@ -99,13 +99,42 @@ public class ProgrammaTV {
 	}
 
 	public boolean validaDataCompleta() {
-		try {
-			LocalDateTime.of(this.anno, this.mese, this.giorno, this.ora, this.minuto);
-			return true;
-		} catch (Exception e) {
+		if (this.anno < 2026 || this.mese < 1 || this.mese > 12 || 
+			this.ora < 0 || this.ora > 23 || this.minuto < 0 || this.minuto > 59) {
+			return false;
+		}
+
+		int giorniMassimiNelMese = 31;
+
+		if (this.mese == 4 || this.mese == 6 || this.mese == 9 || this.mese == 11) {
+			giorniMassimiNelMese = 30;
+		} else if (this.mese == 2) {
+			boolean bisestile = (this.anno % 4 == 0 && this.anno % 100 != 0) || (this.anno % 400 == 0);
+			if (bisestile) {
+				giorniMassimiNelMese = 29;
+			} else {
+				giorniMassimiNelMese = 28;
+			}
+		}
+
+		if (this.giorno < 1 || this.giorno > giorniMassimiNelMese) {
 			System.out.println("[ERRORE] La combinazione di data e ora inserita non esiste nel calendario reale!");
 			return false;
 		}
+
+		LocalDateTime adesso = LocalDateTime.now();
+		int annoRealeCorrente = adesso.getYear();
+		
+		LocalDateTime dataRegistrazione = LocalDateTime.of(this.anno, this.mese, this.giorno, this.ora, this.minuto);
+		
+		if (dataRegistrazione.isBefore(adesso)) {
+			if (this.anno != annoRealeCorrente) {
+				System.out.println("[ERRORE] Non puoi pianificare una registrazione in anni passati!");
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	public void stampaDettagli() {
@@ -117,7 +146,5 @@ public class ProgrammaTV {
 		String min = (this.minuto < 10) ? "0" + this.minuto : "" + this.minuto;
 		System.out.println("Inizio: " + g + "/" + m + "/" + this.anno + " alle ore " + o + ":" + min);
 		System.out.println("Durata: " + this.durataMinuti + " minuti");
-
 	}
-
 }

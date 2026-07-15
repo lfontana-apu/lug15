@@ -40,30 +40,7 @@ public class ProgrammaTest {
 			while (!inputValido) {
 				System.out.print("Inserisci il giorno d'inizio (1-31): ");
 				int giorno = scanner.nextInt();
-
-				int annoCorrente = reg.getAnno();
-				int meseCorrente = reg.getMese();
-				int giorniMassimiNelMese = 31;
-
-				if (meseCorrente == 4 || meseCorrente == 6 || meseCorrente == 9 || meseCorrente == 11) {
-					giorniMassimiNelMese = 30;
-				} else if (meseCorrente == 2) {
-					boolean bisestile = (annoCorrente % 4 == 0 && annoCorrente % 100 != 0) || (annoCorrente % 400 == 0);
-					if (bisestile) {
-						giorniMassimiNelMese = 29;
-					} else {
-						giorniMassimiNelMese = 28;
-					}
-				}
-
-				if (giorno >= 1 && giorno <= giorniMassimiNelMese) {
-					reg.setGiorno(giorno);
-					inputValido = true;
-				} else {
-					System.out.println("[ERRORE] Giorno non valido! Il mese di " + meseCorrente + " nel " + annoCorrente
-							+ " ha " + giorniMassimiNelMese + " giorni. Riprova.");
-					inputValido = false;
-				}
+				inputValido = reg.setGiorno(giorno);
 			}
 
 			inputValido = false;
@@ -83,7 +60,7 @@ public class ProgrammaTest {
 			dataFisicamenteValida = reg.validaDataCompleta();
 
 			if (!dataFisicamenteValida) {
-				System.out.println("[ATTENZIONE] La data inserita non esiste o è nel passato. Reinserisci i dati.");
+				System.out.println("[ATTENZIONE] La data inserita non è valida o è nel passato. Reinserisci la data d'inizio.");
 			}
 		}
 
