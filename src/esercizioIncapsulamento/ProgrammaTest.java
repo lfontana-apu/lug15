@@ -35,7 +35,7 @@ public class ProgrammaTest {
 
 		inputValido = false;
 		while (!inputValido) {
-			System.out.print("Inserisci il giorno d'inizio: ");
+			System.out.print("Inserisci il giorno d'inizio (1-31) ");
 			int giorno = scanner.nextInt();
 
 			int annoCorrente = reg.getAnno();
